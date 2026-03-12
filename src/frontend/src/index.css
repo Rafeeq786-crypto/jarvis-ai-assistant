@@ -1,0 +1,277 @@
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/assets/fonts/JetBrainsMono[wght].woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Sora";
+  src: url("/assets/fonts/Sora[wght].woff2") format("woff2");
+  font-weight: 100 800;
+  font-display: swap;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 8% 0.02 240;
+    --foreground: 92% 0.03 220;
+    --card: 10% 0.025 235;
+    --card-foreground: 92% 0.03 220;
+    --popover: 10% 0.025 235;
+    --popover-foreground: 92% 0.03 220;
+    --primary: 80% 0.18 200;
+    --primary-foreground: 8% 0.02 240;
+    --secondary: 65% 0.22 245;
+    --secondary-foreground: 92% 0.03 220;
+    --muted: 18% 0.03 235;
+    --muted-foreground: 60% 0.05 220;
+    --accent: 75% 0.2 195;
+    --accent-foreground: 8% 0.02 240;
+    --destructive: 55% 0.22 25;
+    --destructive-foreground: 95% 0.01 220;
+    --border: 20% 0.05 235;
+    --input: 15% 0.03 235;
+    --ring: 80% 0.18 200;
+    --radius: 0.25rem;
+    --chart-1: 80% 0.18 200;
+    --chart-2: 65% 0.22 245;
+    --chart-3: 75% 0.2 195;
+    --chart-4: 60% 0.15 220;
+    --chart-5: 50% 0.1 230;
+    --sidebar: 10% 0.02 240;
+    --sidebar-foreground: 92% 0.03 220;
+    --sidebar-primary: 80% 0.18 200;
+    --sidebar-primary-foreground: 8% 0.02 240;
+    --sidebar-accent: 18% 0.03 235;
+    --sidebar-accent-foreground: 92% 0.03 220;
+    --sidebar-border: 20% 0.05 235;
+    --sidebar-ring: 80% 0.18 200;
+
+    /* JARVIS custom tokens */
+    --jarvis-cyan: 80% 0.18 200;
+    --jarvis-blue: 65% 0.22 245;
+    --jarvis-glow: 80% 0.25 195;
+    --jarvis-bg: 8% 0.02 240;
+    --jarvis-panel: 10% 0.025 235;
+    --jarvis-text: 92% 0.03 220;
+    --jarvis-dim: 50% 0.05 220;
+  }
+
+  * {
+    border-color: oklch(var(--border));
+  }
+
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: oklch(var(--background));
+    color: oklch(var(--foreground));
+    font-family: "Sora", sans-serif;
+    overflow: hidden;
+  }
+}
+
+/* HUD grid background */
+.hud-grid {
+  background-image: linear-gradient(
+      oklch(80% 0.18 200 / 0.04) 1px,
+      transparent 1px
+    ), linear-gradient(90deg, oklch(80% 0.18 200 / 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Scanline overlay */
+.scanlines::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    oklch(0% 0 0 / 0.06) 2px,
+    oklch(0% 0 0 / 0.06) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Corner bracket mixin */
+.hud-panel {
+  position: relative;
+  background: oklch(10% 0.025 235 / 0.85);
+  border: 1px solid oklch(80% 0.18 200 / 0.2);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0 20px oklch(80% 0.18 200 / 0.08), inset 0 0 20px
+    oklch(80% 0.18 200 / 0.04);
+}
+
+.hud-panel::before,
+.hud-panel::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-color: oklch(80% 0.18 200 / 0.8);
+  border-style: solid;
+}
+
+.hud-panel::before {
+  top: -1px;
+  left: -1px;
+  border-width: 2px 0 0 2px;
+}
+
+.hud-panel::after {
+  bottom: -1px;
+  right: -1px;
+  border-width: 0 2px 2px 0;
+}
+
+.hud-panel-inner::before,
+.hud-panel-inner::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-color: oklch(80% 0.18 200 / 0.8);
+  border-style: solid;
+  z-index: 2;
+}
+
+.hud-panel-inner::before {
+  top: -1px;
+  right: -1px;
+  border-width: 2px 2px 0 0;
+}
+
+.hud-panel-inner::after {
+  bottom: -1px;
+  left: -1px;
+  border-width: 0 0 2px 2px;
+}
+
+/* Glowing title */
+.jarvis-title {
+  font-family: "JetBrains Mono", monospace;
+  color: oklch(80% 0.18 200);
+  text-shadow: 0 0 10px oklch(80% 0.18 200 / 0.8), 0 0 20px
+    oklch(80% 0.18 200 / 0.5), 0 0 40px oklch(80% 0.18 200 / 0.3);
+  letter-spacing: 0.4em;
+}
+
+/* Blinking status dot */
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+}
+
+.status-dot {
+  animation: blink 1.5s ease-in-out infinite;
+}
+
+.status-dot-fast {
+  animation: blink 0.6s ease-in-out infinite;
+}
+
+/* Cyan glow button */
+.glow-btn {
+  border: 1px solid oklch(80% 0.18 200 / 0.5);
+  background: oklch(80% 0.18 200 / 0.08);
+  color: oklch(80% 0.18 200);
+  transition: all 0.2s ease;
+}
+
+.glow-btn:hover {
+  background: oklch(80% 0.18 200 / 0.18);
+  box-shadow: 0 0 12px oklch(80% 0.18 200 / 0.4);
+}
+
+.glow-btn:active {
+  background: oklch(80% 0.18 200 / 0.28);
+}
+
+.glow-btn-active {
+  background: oklch(80% 0.18 200 / 0.25) !important;
+  box-shadow: 0 0 20px oklch(80% 0.18 200 / 0.6) !important;
+  border-color: oklch(80% 0.18 200 / 0.9) !important;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: oklch(80% 0.18 200 / 0.3);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(80% 0.18 200 / 0.5);
+}
+
+/* Chat message fade in */
+@keyframes messageIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message-in {
+  animation: messageIn 0.3s ease-out forwards;
+}
+
+/* HUD text */
+.hud-text {
+  font-family: "JetBrains Mono", monospace;
+}
+
+/* Input styling override */
+.jarvis-input {
+  background: oklch(12% 0.025 235 / 0.8) !important;
+  border: 1px solid oklch(80% 0.18 200 / 0.3) !important;
+  color: oklch(92% 0.03 220) !important;
+  font-family: "Sora", sans-serif;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.jarvis-input:focus {
+  border-color: oklch(80% 0.18 200 / 0.7) !important;
+  box-shadow: 0 0 0 2px oklch(80% 0.18 200 / 0.15) !important;
+  outline: none !important;
+}
+
+.jarvis-input::placeholder {
+  color: oklch(50% 0.05 220);
+}
+
+/* Select override */
+.jarvis-select {
+  background: oklch(12% 0.025 235 / 0.9) !important;
+  border: 1px solid oklch(80% 0.18 200 / 0.3) !important;
+  color: oklch(80% 0.18 200) !important;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.75rem;
+}
