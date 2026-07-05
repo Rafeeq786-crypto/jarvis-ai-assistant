@@ -1,0 +1,75 @@
+# Issue Triage Configuration
+# This file defines rules and mappings for the AI triage agent
+
+issue_types:
+  - bug
+  - feature
+  - documentation
+  - question
+  - enhancement
+  - chore
+  - infrastructure
+
+priorities:
+  critical: "Blocks release or causes data loss"
+  high: "Major functionality broken or major pain point"
+  medium: "Normal issue with reasonable workaround"
+  low: "Minor issue or nice-to-have improvement"
+
+# Label mappings based on issue type and keywords
+label_mappings:
+  bug:
+    - type-bug
+    - needs-investigation
+  feature:
+    - type-feature
+    - enhancement
+  documentation:
+    - type-docs
+  question:
+    - type-question
+  infrastructure:
+    - type-infrastructure
+    - devops
+
+# Keywords that trigger specific labels
+keyword_labels:
+  security:
+    - security
+    - vulnerability
+  performance:
+    - performance
+    - optimization
+  backend:
+    - backend
+    - api
+  frontend:
+    - frontend
+    - ui
+    - ux
+  database:
+    - database
+    - sql
+  testing:
+    - testing
+    - test-coverage
+
+# Team assignments based on keywords
+team_routing:
+  security: "@security-team"
+  devops: "@devops-team"
+  frontend: "@frontend-team"
+  backend: "@backend-team"
+  database: "@database-team"
+
+# Auto-close criteria
+auto_close:
+  - title_contains: "spam"
+  - title_contains: "test"
+  - body_contains: "duplicate of"
+
+# Priority escalation rules
+escalate_to_critical:
+  - keywords: ["security", "breach", "exploit"]
+  - keywords: ["data loss", "corruption"]
+  - keywords: ["production down", "outage"]
